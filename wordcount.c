@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 		int i;
 		for(i = 0; ; i++)
 		{
+		llllllllll
 			scanf("%s", word);
 			if(strcmp(word, "quit") == 0)
 				break;
