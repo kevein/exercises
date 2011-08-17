@@ -3,9 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-
-#define BUFFSIZE 512
-
+#include "wordcount.h"
 int main(int argc, char *argv[])
 {
 	int maxchar = 0;
