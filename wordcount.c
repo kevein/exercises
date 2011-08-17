@@ -4,6 +4,7 @@
 #include <string.h>
 #include <errno.h>
 #include "wordcount.h"
+
 int main(int argc, char *argv[])
 {
 	int maxchar = 0;
