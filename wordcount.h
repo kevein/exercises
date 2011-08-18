@@ -25,6 +25,12 @@ struct list_head
 	struct list_head *next, *prev;	
 };
 
+struct word_st
+{
+	char *word;
+	struct list_head list_node;
+};
+
 void INIT_LIST_HEAD(struct list_head *list)
 {
         list->next = list;
