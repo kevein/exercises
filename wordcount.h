@@ -29,6 +29,7 @@ struct word_st
 {
 	char *word;
 	struct list_head list_node;
+	int count;
 };
 
 void INIT_LIST_HEAD(struct list_head *list)
@@ -53,4 +54,9 @@ void list_add(struct list_head *new, struct list_head *head)
 }
 
 
-
+struct list_head * get_list_tail(list_head *head)
+{
+	struct list_head *temp;
+	for(temp = head; temp->next != temp; temp = temp->next);	
+	return temp;
+}
