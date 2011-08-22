@@ -9,17 +9,19 @@ struct list_node
 };      
 
 
-void get_list_tail(struct list_node *head, struct list_node **tail)
+void get_list_tail(struct list_node *head, struct list_node *tail)
 {
 	struct list_node *temp = head;
+//	printf("%d, tail: %p\n", __LINE__, tail);
         for(; head->next != head; head = head->next) 
 	{
 		printf("%s\n", head->str);
 	}
-	*tail = head;
+	*tail = *head;
 	head = temp;
 
-	printf("Tail's string is %s\n", (*tail)->str);
+//	printf("%d, tail: %p\n", __LINE__, tail);
+	printf("Tail's string is %s\n", tail->str);
 
 	
 }
@@ -46,8 +48,9 @@ int main()
 	t3.str = "str3";
 	t4.str = "str4";
 
-	struct list_node *tail;
+	struct list_node tail;
+//	printf("%d, tail: %p\n", __LINE__, &tail);
 	get_list_tail(&t1, &tail);
 
-	printf("Tail's string is %s\n", tail->str);
+	printf("Tail's string is %s\n", tail.str);
 }
