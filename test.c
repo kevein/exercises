@@ -9,47 +9,45 @@ struct list_node
 };      
 
 
-struct list_node* get_list_tail(struct list_node  *head)
+void get_list_tail(struct list_node *head, struct list_node **tail)
 {
-        struct list_node  *temp;
-        for(temp = head; temp->next != temp; temp = temp->next)
+	struct list_node *temp = head;
+        for(; head->next != head; head = head->next) 
 	{
-		printf("%s\n", temp->str);
+		printf("%s\n", head->str);
 	}
-        return temp;
+	*tail = head;
+	head = temp;
+
+	printf("Tail's string is %s\n", (*tail)->str);
+
+	
 }
           
 
 int main()
 {
-	struct list_node* t1;
-	struct list_node* t2;
-	struct list_node* t3;
-	struct list_node* t4;
+	struct list_node t1;
+	struct list_node t2;
+	struct list_node t3;
+	struct list_node t4;
 	
-	printf("%d\n", sizeof(struct list_node));
+	t1.prev = &t1;
+	t1.next = &t2;
+	t2.prev = &t1;
+	t2.next = &t3;
+	t3.prev = &t2;
+	t3.next = &t4;
+	t4.prev = &t3;
+	t4.next = &t4;
 	
-	memset(&t1, 0, sizeof(struct list_node));
-	memset(&t2, 0, sizeof(struct list_node));
-	memset(&t3, 0, sizeof(struct list_node));
-	memset(&t4, 0, sizeof(struct list_node));
+	t1.str = "str1";
+	t2.str = "str2";
+	t3.str = "str3";
+	t4.str = "str4";
 
-	t1->prev = t1;
-	t1->next = t2;
-	t2->prev = t1;
-	t2->next = t3;
-	t3->prev = t2;
-	t3->next = t4;
-	t4->prev = t3;
-	t4->next = t4;
-	
-	t1->str = malloc(20 * sizeof(char));
-	t2->str = malloc(20 * sizeof(char));
-	t3->str = malloc(20 * sizeof(char));
-	t4->str = malloc(20 * sizeof(char));
-
-	struct list_node* tail;
-	tail = get_list_tail(t1);
+	struct list_node *tail;
+	get_list_tail(&t1, &tail);
 
 	printf("Tail's string is %s\n", tail->str);
 }
