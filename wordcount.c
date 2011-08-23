@@ -14,17 +14,26 @@ int main(int argc, char *argv[])
 
 	if(argc == 1)
 	{
-		int i;
+		int i = 0;
+		char s = '\0';
+		int wordsize = 0;
 		char buff[WORDSIZE];
 		printf("Input a sentence, blank line means quit:\n");	
-		while(fgets(buff, WORDSIZE, stdin) != NULL)
+		while((s = getchar()) != '\n')
 		{
-			if((str[0] == '\n') || (str[0] == '\0'))
+			if (wordsize == WORDSIZE-1)
 			{
-				printf("Bye\n");
-				exit(0);
+				printf("Too many words!!!\n");
+				break;
 			}
+				
+			buff[wordsize] = s;
+			wordsize++;
 		}
+		buff[wordsize] = '\0';	
+		printf("%d\n", wordsize);
+		printf("%s\n", buff);
+
 	}
 	else if(argc == 2)
 	{
