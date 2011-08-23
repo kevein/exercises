@@ -1,3 +1,5 @@
+#include <string.h>
+
 #undef offsetof
 #ifdef __compiler_offsetof
 #define offsetof(TYPE,MEMBER) __compiler_offsetof(TYPE,MEMBER)
@@ -18,7 +20,7 @@
         (type *)( (char *)__mptr - offsetof(type,member) );})
 
 
-#define BUFFSIZE 512
+#define WORDSIZE 512
 
 struct list_head 
 {
@@ -53,10 +55,19 @@ void list_add(struct list_head *new, struct list_head *head)
         __list_add(new, head, head->next);
 }
 
-
-struct list_head * get_list_tail(list_head *head)
+void get_list_tail(struct list_head *head, struct list_head *tail)
 {
-	struct list_head *temp;
-	for(temp = head; temp->next != temp; temp = temp->next);	
-	return temp;
+	struct list_head *temp = head;
+	for(; head->next != head; head = head->next);
+	*tail = *head;
+	head = temp;
+}
+
+struct word_st *init_word_st(char *str, struct list_head *head)
+{
+	struct word_st *ws;
+	ws->word = str;
+	ws->count = strlen(str);	
+	list_add(&(ws->list_node), head);	
+	return ws;
 }

@@ -1,31 +1,30 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <errno.h>
 #include "wordcount.h"
 
 int main(int argc, char *argv[])
 {
 	int maxchar = 0;
-	int wordcount = 0;
-	char *wordlist[BUFFSIZE];
-	char word[BUFFSIZE];
+	struct list_head *list;
+	struct list_head headnode;
+	list = &headnode;
+	INIT_LIST_HEAD(list);
 
 	if(argc == 1)
 	{
-		printf("Input a sentence, print \"quit\" if you want quit\n");
 		int i;
-		for(i = 0; ; i++)
+		char buff[WORDSIZE];
+		printf("Input a sentence, blank line means quit:\n");	
+		while(fgets(buff, WORDSIZE, stdin) != NULL)
 		{
-			scanf("%s", word);
-			if(strcmp(word, "quit") == 0)
-				break;
-			wordlist[i] = word;
-		}		
-		for(i = 0; i <= wordcount; i++) 
-			printf("%s\n", wordlist[i]);
-	
+			if((str[0] == '\n') || (str[0] == '\0'))
+			{
+				printf("Bye\n");
+				exit(0);
+			}
+		}
 	}
 	else if(argc == 2)
 	{
