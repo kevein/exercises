@@ -20,26 +20,34 @@
         (type *)( (char *)__mptr - offsetof(type,member) );})
 
 
-#define WORDSIZE 512
+#define WORDSIZE 512 
+
+/* component of constructing a list, use container_of() to get the container's 
+ * pointer.
+ * */
 
 struct list_head 
 {
 	struct list_head *next, *prev;	
 };
 
+/* store a word, contain a list_head struct, and the number of characters.
+ * */
 struct word_st
 {
 	char *word;
 	struct list_head list_node;
 	int count;
 };
-
+/*Init the head of list
+ * */
 void INIT_LIST_HEAD(struct list_head *list)
 {
         list->next = list;
         list->prev = list;
 }
-
+/*add a node into list
+ * */
 void __list_add(struct list_head *new,
                               struct list_head *prev,
                               struct list_head *next)
@@ -55,6 +63,8 @@ void list_add(struct list_head *new, struct list_head *head)
         __list_add(new, head, head->next);
 }
 
+/*get the tail node if the list head is given
+ * */
 void get_list_tail(struct list_head *head, struct list_head *tail)
 {
 	struct list_head *temp = head;
@@ -63,6 +73,8 @@ void get_list_tail(struct list_head *head, struct list_head *tail)
 	head = temp;
 }
 
+/* init a word struct
+ * */
 struct word_st *init_word_st(char *str, struct list_head *head)
 {
 	struct word_st *ws;

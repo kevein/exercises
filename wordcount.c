@@ -12,11 +12,15 @@ int main(int argc, char *argv[])
 	list = &headnode;
 	INIT_LIST_HEAD(list);
 
+	/* if no argument, we will accept a single sentence.
+ 	**/
 	if(argc == 1)
 	{
 		int i = 0;
 		char s = '\0';
 		int wordsize = 0;
+	/* buffer for storing input
+ 	**/
 		char buff[WORDSIZE];
 		printf("Input a sentence, blank line means quit:\n");	
 		while((s = getchar()) != '\n')
@@ -31,13 +35,18 @@ int main(int argc, char *argv[])
 			wordsize++;
 		}
 		buff[wordsize] = '\0';	
-		printf("%d\n", wordsize);
-		printf("%s\n", buff);
+		int nr_of_word = 1;
+		for(i = 0; i < wordsize; i++)
+		{
+			if(buff[i] == 0x20)
+				nr_of_word++;
+		}
+		
 
 	}
 	else if(argc == 2)
 	{
-
+		printf("Not implement yet!\n");
 	}
 	else
 	exit(EINVAL);
