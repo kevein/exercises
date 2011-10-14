@@ -45,9 +45,9 @@ SqStack* createRPN(char s[])
 			case '-':
 				while (opstk.top != -1 && opstk.data[opstk.top] != '(')
                                 {
+                                        rpn->top++;
                                         rpn->data[rpn->top] = opstk.data[opstk.top];
                                         opstk.top--;
-                                        rpn->top++;
                                 }
                                 opstk.top++;                                    
                                 opstk.data[opstk.top] = s[i]; 
@@ -80,20 +80,20 @@ SqStack* createRPN(char s[])
 // clear opstk
 	while(opstk.top > -1){
 		rpn->top++;
-		rpn->data[rpn->top++] = opstk.data[opstk.top];	
+		rpn->data[rpn->top] = opstk.data[opstk.top];	
 		opstk.top--;
 	}
-
-//	for(i = 0; i <= rpn->top; i++)
-	printf("%s", rpn->data);
-	printf("\n");
 	return rpn;
 }
 
 int main()
 {
 	char s[14] = {'5','+','2','*','(','1','+','6',')','-','8','/','2','\0'};
+	int i;
 	SqStack *ss;
 	ss = createRPN(s);
+	for(i = 0; i <= ss->top; i++)
+		printf("%c", ss->data[i]);
+	printf("\n");
 	exit(0);
 }
