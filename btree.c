@@ -204,11 +204,43 @@ void levelOrder(BTree *b)
 	printf("\n");
 }
 
+int printLeaf(BTree *b)
+{
+        BTree *btstack[MAXSIZE], *p;
+        int top = -1;
+
+        if(b != NULL)
+        {
+                p = b;
+                while(p != NULL)
+                {
+                        if(p->rc != NULL)
+                        {
+                                top++;
+                                btstack[top] = p->rc;
+                        }
+                        if(p->lc != NULL)
+                                p = p->lc;
+                        if(p->lc == NULL && p->rc == NULL)
+                        {
+                                printf("%d\t", p->data);
+                                if(top > -1){
+                                        p = btstack[top];
+                                        top--;
+                                }
+                                else 
+                                        break;
+                        }
+                }
+        printf("\n");
+        }
+}
+
 int main()
 {
 	BTree *bt;
-	int a[7] = {8,13,2,1,3,10,20};
-	createBT(bt, a, 7);
+	int a[15] = {10,5,15,2,7,12,18,1,3,6,8,11,13,16,19};
+	createBT(bt, a, 15);
 //-------------------------------------------------------
 	printf("PreOrder traversal:\n");
 	preOrder(bt);
@@ -227,5 +259,8 @@ int main()
 //-------------------------------------------------------
 	printf("levelOrder traversal:\n");
 	levelOrder(bt);
+//-------------------------------------------------------
+	printf("Print leaves: \n");
+	printLeaf(bt);
 	exit(0);
 }
