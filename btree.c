@@ -170,6 +170,40 @@ void postOrder1(BTree *b)                 //non-recursive postorder traversal
 	}
 }
 
+void levelOrder(BTree *b)
+{
+	BTree *p;
+	BTree *qu[MAXSIZE];	//环形队列
+	int front, rear;	//定义队头和队尾
+	front = rear =0;	//置空队列
+
+	if(b == NULL)
+	{
+		printf("The tree is null!\n");
+		return;
+	}
+	rear++;
+	qu[rear] = b;		//根节点入队列
+	while(rear != front)
+	{
+		front = (front+1)%MAXSIZE;
+		p = qu[front];
+		printf("%d\t", p->data);
+		if(p->lc != NULL)
+		{
+			rear = (rear + 1)%MAXSIZE;
+			qu[rear] = p->lc;
+		}
+		if(p->rc != NULL)
+		{
+			rear = (rear + 1)%MAXSIZE;
+			qu[rear] = p->rc;
+		}
+	}
+	
+	printf("\n");
+}
+
 int main()
 {
 	BTree *bt;
@@ -191,5 +225,7 @@ int main()
 	printf("\n");
 	postOrder1(bt);
 //-------------------------------------------------------
+	printf("levelOrder traversal:\n");
+	levelOrder(bt);
 	exit(0);
 }
