@@ -170,6 +170,24 @@ void postOrder1(BTree *b)                 //non-recursive postorder traversal
 	}
 }
 
+BTree *binsearch(BTree *b, int k)
+{
+	if(b == NULL)
+		return NULL;
+	else if(b->data == k){
+		printf("Found it!\n");
+		return b;
+	}
+	else if(k < b->data){
+		printf("%d\n", b->data);
+		binsearch(b->lc, k);
+	}
+	else { 
+		printf("%d\n", b->data);
+		binsearch(b->rc, k);
+	}
+}
+
 void levelOrder(BTree *b)
 {
 	BTree *p;
@@ -245,9 +263,62 @@ void printLeaf1(BTree *b)
         }
 }
 
+BTree *findparent(BTree *root, BTree *node)
+{
+        BTree *btstack[MAXSIZE], *p;
+	//BTree *parent;
+        int top = -1;
+
+        if(root != NULL)
+        {
+                top++;
+                btstack[top] = root;       //push root node into stack
+                while(top > -1)
+                {
+                        p = btstack[top];       //pop root node from stack
+                        top--;
+			if(p->lc == node || p->rc ==node)
+			{
+//			printf("The parent of %d is %d\n", node->data, p->data);
+//			parent = (BTree *) malloc(sizeof(BTree));
+//			parent->data = p->data;
+//			parent->lc = p->lc;
+//			parent->rc = p->rc;
+//			return parent;
+				return p;
+			}
+                        if(p->rc != NULL)       //if root node has right child, push the right child of root node into stack
+                        {
+                                top++;
+                                btstack[top] = p->rc;
+                        }
+                        if(p->lc != NULL)       //if root node has left child, push the left child of root node into stack
+                        {
+                                top++;
+                                btstack[top] = p->lc;
+                        }
+                }
+        }
+
+	return NULL;	
+}
+void delnode(BTree *&b, ElemType k)
+{
+	if(b == NULL)
+		return;
+	BTree *p = b, *parent;
+	if(p->data == k)
+	{
+		parent = findparent(b, p);
+		if(parent->lc == p) parent->lc = NULL;	//if p is the left child of it's parent, set the parent's lc to NULL
+		if(parent->rc == p) parent->rc = NULL;	//if p is the right child of it's parent, set the parent's rc to NULL
+		free(p);
+	}
+}
+
 int main()
 {
-	BTree *bt;
+	BTree *bt, *node;
 	int a[15] = {10,5,15,2,7,12,18,1,3,6,8,11,13,16,19};
 	createBT(bt, a, 15);
 //-------------------------------------------------------
@@ -273,5 +344,11 @@ int main()
 	printLeaf1(bt);
 	printLeaf(bt);
 	printf("\n");
+//-------------------------------------------------------
+	node = binsearch(bt,3);	
+	printf("%d\n", node->data);
+//-------------------------------------------------------
+	delnode(bt, 3);
+	levelOrder(bt);
 	exit(0);
 }
