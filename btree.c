@@ -11,6 +11,8 @@ typedef struct node
 	struct node *rc;	// right child
 } BTree;
 
+typedef ElemType SqTree[MAXSIZE];
+
 void createBT(BTree *&bt, int a[], int n)
 {
 	BTree *p, *q;
@@ -66,7 +68,7 @@ void inOrder(BTree *b)         //recursive inorder traversal
         }
 }
 
-void postOrder(BTree *b)         //recursive inorder traversal
+void postOrder(BTree *b)         //recursive postorder traversal
 {
         if(b != NULL)
         {
@@ -175,15 +177,15 @@ BTree *binsearch(BTree *b, int k)
 	if(b == NULL)
 		return NULL;
 	else if(b->data == k){
-		printf("Found it!\n");
+		printf("\nFind it: \t");
 		return b;
 	}
 	else if(k < b->data){
-		printf("%d\n", b->data);
+		printf("%d ---> ", b->data);
 		binsearch(b->lc, k);
 	}
 	else { 
-		printf("%d\n", b->data);
+		printf("%d ---> ", b->data);
 		binsearch(b->rc, k);
 	}
 }
@@ -316,6 +318,42 @@ void delnode(BTree *&b, ElemType k)
 	}
 }
 
+void copytree(BTree *b, BTree *&t)
+{
+	if(b == NULL)
+		t = NULL;
+	else
+	{
+		t = (BTree *)malloc(sizeof(BTree));
+		t->data = b->data;
+		copytree(b->lc, t->lc);
+		copytree(b->rc, t->rc);
+	}
+}
+
+int like(BTree *a, BTree *b)		//判断两棵树是否相似
+{
+	if(a == NULL && b == NULL)
+		return 1;
+	if(a == NULL && b != NULL || a != NULL && b == NULL)
+		return 0;
+	else
+	{
+		return (like(a->lc, b->lc) && like(a->rc, b->rc));
+	}
+
+}
+
+void trans2seq(SqTree a, BTree *b, int i)	//将链式存储编程顺序存储
+{
+	if(b != NULL)
+	{
+		a[i] = b->data;
+		trans2seq(a, b->lc, 2*i);
+		trans2seq(a, b->rc, 2*i+1);
+	}
+}
+
 int main()
 {
 	BTree *bt, *node;
@@ -348,7 +386,43 @@ int main()
 	node = binsearch(bt,3);	
 	printf("%d\n", node->data);
 //-------------------------------------------------------
-	delnode(bt, 3);
-	levelOrder(bt);
+	BTree *t;
+	copytree(bt, t);
+	printf("Tree t copied from tree bt: \n");
+	levelOrder(t);	
+//-------------------------------------------------------
+	BTree *bt2;
+	int b[15] = {20,15,25,12,17,22,28,11,13,16,18,21,23,26,29};
+	int result;
+	createBT(bt2, b, 15);
+	result = like(bt, bt2);
+	if(result == 1)	
+		printf("bt is like bt2\n");
+	else
+		printf("bt is not like bt2\n");
+	BTree *bt3;
+	int c[14] = {20,15,25,12,17,22,28,11,13,16,18,21,23,26};
+	createBT(bt3, c, 14);
+	result = -1;
+	result = like(bt, bt3);
+	if(result)	
+		printf("bt is like bt3\n");
+	else if(result == 0)
+		printf("bt is not like bt3\n");
+//-------------------------------------------------------
+	SqTree st;	//把链式存储的二叉树bt变为顺序存储的二叉树st
+	int i;
+	for (i = 0; i<MAXSIZE; i++)
+		st[i] = '#';
+	trans2seq(st, bt, 1);
+	for (i = 0; i<30; i++)
+	{
+		if(st[i] == 35)
+			printf("# ");
+		else
+		printf("%d ", st[i]);
+	}
+	printf("\n");
+//-------------------------------------------------------
 	exit(0);
 }
